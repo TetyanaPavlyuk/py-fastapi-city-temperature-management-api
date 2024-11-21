@@ -23,9 +23,6 @@ class CityUpdate(CityBase):
     name: Optional[str] = None
     additional_info: Optional[str] = None
 
-    class Config:
-        from_attributes = True
-
 
 class CityDelete(BaseModel):
     message: str
