@@ -50,3 +50,10 @@ async def put_city(db: AsyncSession, id: int, city: schemas.CityUpdate) -> model
     await db.commit()
     await db.refresh(db_city)
     return db_city
+
+
+async def delete_city(db: AsyncSession, id: int) -> None:
+    db_city = await get_city_by_id(db=db, id=id)
+    if db_city:
+        await db.delete(db_city)
+        await db.commit()

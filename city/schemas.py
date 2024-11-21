@@ -22,8 +22,3 @@ class City(CityBase):
 class CityUpdate(CityBase):
     name: Optional[str] = None
     additional_info: Optional[str] = None
-
-
-class CityDelete(BaseModel):
-    message: str
-    deleted_id: int

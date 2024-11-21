@@ -30,3 +30,12 @@ async def update_city(
         db: AsyncSession = Depends(get_db)
 ):
     return await crud.put_city(db=db, id=city_id, city=city)
+
+
+@router.delete("/cities/{city_id}/")
+async def delete_city(
+        city_id: int,
+        db: AsyncSession = Depends(get_db)
+):
+    await crud.delete_city(db=db, id=city_id)
+    return {"message": f"City with id {city_id} successfully deleted"}
