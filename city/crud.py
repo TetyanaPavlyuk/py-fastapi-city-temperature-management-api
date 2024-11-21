@@ -6,20 +6,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from city import models, schemas
 
 
-async def get_city_by_name(
-        db: AsyncSession,
-        name: str
-) -> models.City:
+async def get_city_by_name(db: AsyncSession, name: str) -> models.City:
     query = select(models.City).where(models.City.name == name)
     city = await db.execute(query)
     return city.scalars().first()
 
 
-
-async def create_city(
-        db: AsyncSession,
-        city: schemas.CityCreate
-) -> models.City:
+async def create_city(db: AsyncSession, city: schemas.CityCreate) -> models.City:
     if await get_city_by_name(db, city.name):
         raise HTTPException(status_code=400, detail=f"City {city.name} already exists")
     query = insert(models.City).values(
@@ -36,3 +29,12 @@ async def get_city_list(db: AsyncSession) -> list[models.City]:
     query = select(models.City)
     city_list = await db.execute(query)
     return [city[0] for city in city_list.fetchall()]
+
+
+async def get_city_by_id(db: AsyncSession, id: int) -> models.City:
+    query = select(models.City).where(models.City.id == id)
+    city = await db.execute(query)
+    city = city.scalars().first()
+    if not city:
+        raise HTTPException(status_code=404, detail=f"City with id {id} not found")
+    return city
