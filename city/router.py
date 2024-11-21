@@ -13,3 +13,10 @@ async def create_city(
         db: AsyncSession = Depends(get_db)
 ):
     return await crud.create_city(db=db, city=city)
+
+
+@router.get("/cities/", response_model=list[schemas.City])
+async def get_cities(
+        db: AsyncSession = Depends(get_db)
+):
+    return await crud.get_city_list(db=db)
