@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from alembic import context
 
 from city.models import *
+from temperature.models import *
 from database import Base, SQLALCHEMY_DATABASE_URL
 
 # this is the Alembic Config object, which provides
