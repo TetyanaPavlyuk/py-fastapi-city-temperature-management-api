@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from sqlalchemy import select, insert, update
+from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from city import models, schemas
