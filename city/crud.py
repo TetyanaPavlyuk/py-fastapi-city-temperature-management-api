@@ -14,7 +14,10 @@ async def get_city_by_name(db: AsyncSession, name: str) -> models.City:
 
 async def post_city(db: AsyncSession, city: schemas.CityCreate) -> models.City:
     if await get_city_by_name(db, city.name):
-        raise HTTPException(status_code=400, detail=f"City {city.name} already exists")
+        raise HTTPException(
+            status_code=400,
+            detail=f"City {city.name} already exists"
+        )
     query = insert(models.City).values(
         name=city.name,
         additional_info=city.additional_info,
@@ -36,11 +39,18 @@ async def get_city_by_id(db: AsyncSession, id: int) -> models.City:
     city = await db.execute(query)
     city = city.scalars().first()
     if not city:
-        raise HTTPException(status_code=404, detail=f"City with id {id} not found")
+        raise HTTPException(
+            status_code=404,
+            detail=f"City with id {id} not found"
+        )
     return city
 
 
-async def put_city(db: AsyncSession, id: int, city: schemas.CityUpdate) -> models.City:
+async def put_city(
+        db: AsyncSession,
+        id: int,
+        city: schemas.CityUpdate
+) -> models.City:
     db_city = await get_city_by_id(db=db, id=id)
     if city.name is not None:
         db_city.name = city.name

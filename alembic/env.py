@@ -62,9 +62,7 @@ async def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable: AsyncEngine = create_async_engine(
-        SQLALCHEMY_DATABASE_URL
-    )
+    connectable: AsyncEngine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 
     async with connectable.connect() as connection:
         await connection.run_sync(

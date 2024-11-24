@@ -20,7 +20,7 @@ router = APIRouter()
 
 
 async def fetch_temperature(
-        db: AsyncSession, city: City, client: httpx.AsyncClient
+    db: AsyncSession, city: City, client: httpx.AsyncClient
 ) -> None:
     try:
         response = await client.get(
@@ -47,9 +47,13 @@ async def update_temperatures(db: AsyncSession = Depends(get_db)):
     async with httpx.AsyncClient() as client:
         tasks: list = []
         for city in cities:
+
             async def process_city(city: City):
                 async for individual_db in get_db():
-                    await fetch_temperature(db=individual_db, city=city, client=client)
+                    await fetch_temperature(
+                        db=individual_db, city=city, client=client
+                    )
+
             tasks.append(process_city(city=city))
         await asyncio.gather(*tasks)
     return {"message": "Temperatures updated successfully"}

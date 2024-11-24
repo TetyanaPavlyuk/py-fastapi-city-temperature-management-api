@@ -9,7 +9,10 @@ router = APIRouter()
 
 
 @router.post("/cities", response_model=schemas.City)
-async def create_city(city: schemas.CityCreate, db: AsyncSession = Depends(get_db)):
+async def create_city(
+        city: schemas.CityCreate,
+        db: AsyncSession = Depends(get_db)
+):
     return await crud.post_city(db=db, city=city)
 
 
@@ -25,17 +28,12 @@ async def detail_city(city_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.put("/cities/{city_id}", response_model=schemas.City)
 async def update_city(
-        city_id: int,
-        city: schemas.CityUpdate,
-        db: AsyncSession = Depends(get_db)
+    city_id: int, city: schemas.CityUpdate, db: AsyncSession = Depends(get_db)
 ):
     return await crud.put_city(db=db, id=city_id, city=city)
 
 
 @router.delete("/cities/{city_id}")
-async def delete_city(
-        city_id: int,
-        db: AsyncSession = Depends(get_db)
-):
+async def delete_city(city_id: int, db: AsyncSession = Depends(get_db)):
     await crud.delete_city(db=db, id=city_id)
     return {"message": f"City with id {city_id} successfully deleted"}
