@@ -38,7 +38,7 @@ async def fetch_temperature(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/temperatures/update", response_model=dict)
+@router.post("/temperatures/update/", response_model=dict)
 async def update_temperatures(db: AsyncSession = Depends(get_db)):
     cities = await get_city_list(db=db)
     if not cities:
@@ -59,11 +59,8 @@ async def update_temperatures(db: AsyncSession = Depends(get_db)):
     return {"message": "Temperatures updated successfully"}
 
 
-@router.get("/temperatures", response_model=list[schemas.Temperature])
-async def list_temperatures(db: AsyncSession = Depends(get_db)):
-    return await crud.get_temperature_list(db=db)
-
-
 @router.get("/temperatures/", response_model=list[schemas.Temperature])
-async def detail_temperature(city_id: int, db: AsyncSession = Depends(get_db)):
-    return await crud.get_temperature_by_city_id(city_id=city_id, db=db)
+async def detail_temperature(city_id: int = None, db: AsyncSession = Depends(get_db)):
+    if city_id:
+        return await crud.get_temperature_by_city_id(city_id=city_id, db=db)
+    return await crud.get_temperature_list(db=db)
